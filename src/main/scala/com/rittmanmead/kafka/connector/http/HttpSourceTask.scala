@@ -3,7 +3,9 @@ package com.rittmanmead.kafka.connector.http
 import java.util.{List => JavaList, Map => JavaMap}
 import java.util.concurrent.atomic.{AtomicBoolean => JavaBoolean}
 
-import com.rittmanmead.kafka.connector.http.utils.{DataConverter, Version}
+import com.rittmanmead.kafka.connector.http.schema.{KafkaSchemaParser, WeatherSchemaParser}
+import com.rittmanmead.kafka.connector.http.source.{KafkaSourceService, WeatherHttpService}
+import org.apache.kafka.connect.data.{Schema, Struct}
 import org.apache.kafka.connect.errors.ConnectException
 import org.apache.kafka.connect.source.{SourceRecord, SourceTask}
 import org.slf4j.{Logger, LoggerFactory}
@@ -17,8 +19,8 @@ class HttpSourceTask extends SourceTask {
 
   //private val dataConverter = new DataConverter
 
-  private var httpService: HttpService    = _
-  private var running: JavaBoolean        = _
+  private var sourceService: KafkaSourceService[String, Struct] = _
+  private var running: JavaBoolean = _
 
   override def version(): String = Version.getVersion
 
@@ -35,11 +37,12 @@ class HttpSourceTask extends SourceTask {
 
     val httpUrl: String = taskConfig.getHttpUrl
     val pollInterval: Long = taskConfig.getPollInterval
+    val schemaParser: KafkaSchemaParser[String, Struct] = WeatherSchemaParser
 
-    taskLogger.info(s"Setting up Http service for ${httpUrl}...")
-    Try( new HttpService(taskConfig.getTopic, taskConfig.getService, httpUrl, taskLogger) ) match {
-      case Success(service) =>  httpService = service
-      case Failure(error) =>    taskLogger.error(s"Could not establish a Http service to ${httpUrl}")
+    taskLogger.info(s"Setting up an HTTP service for ${httpUrl}...")
+    Try( WeatherHttpService(taskConfig.getTopic, schemaParser, taskConfig.getService, httpUrl) ) match {
+      case Success(service) =>  sourceService = service
+      case Failure(error) =>    taskLogger.error(s"Could not establish an HTTP service to ${httpUrl}")
                                 throw error
     }
 
@@ -50,12 +53,20 @@ class HttpSourceTask extends SourceTask {
   /**
     * invoked by kafka-connect runtime to stop this task
     */
-  override def stop(): Unit = {
+  override def stop(): Unit = this.synchronized {
+    taskLogger.info("Stopping task.")
+    running.set(false)
+  }
+
+  /*
+  {
     if (running != null) {
       taskLogger.info("Stopping task.")
       running.set(false)
     }
   }
+  */
+
 
   /**
     * invoked by kafka-connect runtime to poll data in [[HttpSourceConnectorConstants.POLL_INTERVAL_MS_CONFIG]] interval
@@ -68,7 +79,7 @@ class HttpSourceTask extends SourceTask {
     val pollInterval = taskConfig.getPollInterval
     val startTime    = System.currentTimeMillis
 
-    val fetchedRecords: Seq[SourceRecord] = Try( httpService.getWeatherRecords() ) match {
+    val fetchedRecords: Seq[SourceRecord] = Try(sourceService.sourceRecords) match {
       case Success(records)                    => if(records.isEmpty) taskLogger.info(s"No data from ${taskConfig.getService}")
                                                   else taskLogger.info(s"Got ${records.size} results for ${taskConfig.getService}")
                                                   records

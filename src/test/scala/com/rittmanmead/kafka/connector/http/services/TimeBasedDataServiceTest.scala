@@ -4,9 +4,9 @@ import java.sql._
 import java.util.{GregorianCalendar, TimeZone}
 
 import com.rittmanmead.kafka.connector.http.HttpSourceConnectorConstants
-import com.rittmanmead.kafka.connector.http.models.DatabaseProduct.{MsSQL, MySQL}
-import com.rittmanmead.kafka.connector.http.models.Mode.TimestampMode
-import com.rittmanmead.kafka.connector.http.utils.DataConverter
+//import com.rittmanmead.kafka.connector.http.models.DatabaseProduct.{MsSQL, MySQL}
+//import com.rittmanmead.kafka.connector.http.models.Mode.TimestampMode
+//import com.rittmanmead.kafka.connector.http.schema.DataConverter
 import org.apache.kafka.connect.data.{Field, Schema, Struct}
 import org.apache.kafka.connect.source.SourceRecord
 import org.mockito.Mockito._

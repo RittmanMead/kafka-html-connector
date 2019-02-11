@@ -3,3 +3,5 @@
 
 # SBT specific
 target/
+
+out

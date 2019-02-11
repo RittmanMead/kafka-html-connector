@@ -1,11 +1,9 @@
 package com.rittmanmead.kafka.connector.http
 
 
-import java.util.{Map => JavaMap, List => JavaList}
+import java.util.{List => JavaList, Map => JavaMap}
+
 import org.slf4j.LoggerFactory
-
-import com.rittmanmead.kafka.connector.http.utils.Version
-
 import org.apache.kafka.connect.errors.ConnectException
 import org.apache.kafka.connect.source.{SourceConnector, SourceTask}
 import org.apache.kafka.common.config.ConfigDef
@@ -68,6 +66,6 @@ class HttpSourceConnector extends SourceConnector {
   * @param maxTasks maximum number of configurations to generate
   * @return configurations for tasks
   */
-  override def taskConfigs(maxTasks: Int): JavaList[JavaMap[String, String]] = List(connectorConfig.connectorProperties.asJava).asJava
+  override def taskConfigs(maxTasks: Int): JavaList[JavaMap[String, String]] = List(connectorConfig.connectorProperties.asJava).asJava // Only returns one element in list. This assumes maxTasks = 1.
 
 }

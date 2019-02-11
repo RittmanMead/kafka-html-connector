@@ -2,9 +2,6 @@ package com.rittmanmead.kafka.connector.http
 
 
 import com.rittmanmead.kafka.connector.http.HttpSourceConnectorConstants._
-import com.rittmanmead.kafka.connector.http.models.Mode.{IncrementingMode, TimestampIncrementingMode, TimestampMode}
-import scalaj.http.BuildInfo
-
 
 /**
   * @constructor

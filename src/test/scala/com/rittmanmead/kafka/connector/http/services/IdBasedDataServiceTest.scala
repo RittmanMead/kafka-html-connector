@@ -3,9 +3,9 @@ package com.rittmanmead.kafka.connector.http.services
 import java.sql.{Connection, PreparedStatement, ResultSet}
 
 import com.rittmanmead.kafka.connector.http.HttpSourceConnectorConstants
-import com.rittmanmead.kafka.connector.http.models.DatabaseProduct.{MsSQL, MySQL}
-import com.rittmanmead.kafka.connector.http.models.Mode.IncrementingMode
-import com.rittmanmead.kafka.connector.http.utils.DataConverter
+//import com.rittmanmead.kafka.connector.http.models.DatabaseProduct.{MsSQL, MySQL}
+//import com.rittmanmead.kafka.connector.http.models.Mode.IncrementingMode
+//import com.rittmanmead.kafka.connector.http.schema.DataConverter
 import org.apache.kafka.connect.data.{Field, Schema, Struct}
 import org.apache.kafka.connect.source.SourceRecord
 import org.mockito.Mockito._

@@ -1,8 +1,9 @@
 package com.rittmanmead.kafka.connector.http
 
-import com.rittmanmead.kafka.connector.http.models.Mode.TimestampIncrementingMode
+//import com.rittmanmead.kafka.connector.http.models.Mode.TimestampIncrementingMode
 import org.scalatest.{Matchers, WordSpec}
 
+/*
 class HttpSourceConnectorConfigTest extends WordSpec with Matchers {
   import JdbcSourceConnectorConfigTestData._
 
@@ -116,3 +117,4 @@ object JdbcSourceConnectorConfigTestData {
   val incrementingOffsetConfig: (String, String)          = "incrementing.offset" -> "5"
   val keyFieldConfig: (String, String)                    = "key.field.name" -> "test-key"
 }
+*/
