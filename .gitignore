@@ -1,7 +1,3 @@
-# IDE specific
 .idea/
-
-# SBT specific
 target/
-
-out
+out/

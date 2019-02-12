@@ -1,8 +1,8 @@
 package com.rittmanmead.kafka.connector.http
 
-
 import java.util.{List => JavaList, Map => JavaMap}
 
+import com.rittmanmead.kafka.connector.http.HttpSourceConnectorConstants.{API_KEY_CONFIG, API_PARAMS_CONFIG}
 import org.slf4j.LoggerFactory
 import org.apache.kafka.connect.errors.ConnectException
 import org.apache.kafka.connect.source.{SourceConnector, SourceTask}
@@ -21,6 +21,8 @@ class HttpSourceConnector extends SourceConnector {
   private val configDef: ConfigDef =
       new ConfigDef()
           .define(HttpSourceConnectorConstants.HTTP_URL_CONFIG, Type.STRING, Importance.HIGH, "Web API Access URL")
+          .define(HttpSourceConnectorConstants.API_KEY_CONFIG, Type.STRING, Importance.HIGH, "Web API Access Key")
+          .define(HttpSourceConnectorConstants.API_PARAMS_CONFIG, Type.STRING, Importance.HIGH, "Web API additional config parameters")
           .define(HttpSourceConnectorConstants.SERVICE_CONFIG, Type.STRING, Importance.HIGH, "Kafka Service name")
           .define(HttpSourceConnectorConstants.TOPIC_CONFIG, Type.STRING, Importance.HIGH, "Kafka Topic name")
           .define(HttpSourceConnectorConstants.POLL_INTERVAL_MS_CONFIG, Type.STRING, Importance.HIGH, "Polling interval in milliseconds")
@@ -29,10 +31,10 @@ class HttpSourceConnector extends SourceConnector {
 
   override def config: ConfigDef = configDef
 
-  /**
+/**
   * @return the version of this connector
   */
-  override def version: String = Version.getVersion
+  override def version: String = HttpSourceVersion.getVersion
 
 /**
   * invoked by Kafka connect runtime to start this connector
