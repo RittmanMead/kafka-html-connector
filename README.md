@@ -1,12 +1,17 @@
-[![Build Status](https://travis-ci.org/agoda-com/kafka-jdbc-connector.svg?branch=master)](https://travis-ci.org/agoda-com/kafka-jdbc-connector)
-[![Gitter chat](https://badges.gitter.im/kafka-jdbc-connector/kafka-jdbc-connector.png)](https://gitter.im/kafka-jdbc-connector/Lobby)
-[![License: Apache](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/agoda-com/kafka-jdbc-connector/blob/master/LICENSE.txt)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.agoda/kafka-jdbc-connector_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.agoda/kafka-jdbc-connector_2.11)
-[![Codecov branch](https://img.shields.io/codecov/c/github/agoda-com/kafka-jdbc-connector/master.svg)](https://github.com/agoda-com/kafka-jdbc-connector)
-[![CLA assistant](https://cla-assistant.io/readme/badge/agoda-com/kafka-jdbc-connector)](https://cla-assistant.io/agoda-com/kafka-jdbc-connector)
+Kafka HTTP Connector for openweathermap.org
+===========================================
+by Rittman Mead
 
-Kafka JDBC Connector
-====================
+This implementation is based on:
+* [Confluent's Connector Developer Guide](https://docs.confluent.io/current/connect/devguide.html)
+* [Agoda's Kafka JDBC Connector](https://index.scala-lang.org/agoda-com/kafka-jdbc-connector/kafka-jdbc-connector/1.2.0?target=_2.12) was used as an example.
+
+
+
+
+
+
+
 
 *Simple way to copy data from relational databases into kafka.*
 

@@ -14,10 +14,6 @@ object WeatherSchemaParser extends KafkaSchemaParser[String, Struct] {
 
     private val logger: Logger = LoggerFactory.getLogger(classOf[HttpSourceTask])
 
-
-    // todo: make some of these private
-
-
     override val schema: Schema = SchemaBuilder.struct().name("weatherSchema")
         .field("coord-lon", Schema.FLOAT64_SCHEMA)
         .field("coord-lat", Schema.FLOAT64_SCHEMA)
@@ -60,13 +56,11 @@ object WeatherSchemaParser extends KafkaSchemaParser[String, Struct] {
         .build()
 
 
-
     private val emptyString: String = "N/A" // todo: optional data type???
     private val emptyNumber: Double = -1 // todo: optional data tyoe???
 
     case class Coord(lon: Double, lat: Double)
     case class WeatherAtom(id: Double, main: String, description: String, icon: String)
-    //case class Weather(weatherAtoms: List[WeatherAtom])
     case class Main(temp: Double, pressure: Double, humidity: Double, temp_min: Double, temp_max: Double)
 
     case class Wind(speed: Double, deg: Double)
@@ -119,73 +113,11 @@ object WeatherSchemaParser extends KafkaSchemaParser[String, Struct] {
     val emptyCoord = Coord(emptyNumber, emptyNumber)
     val emptySys = Sys(emptyNumber, emptyNumber, emptyNumber, emptyString, emptyNumber, emptyNumber)
     val emptyWeatherAtom = WeatherAtom(emptyNumber, emptyString, emptyString, emptyString)
-    //val emptyWeather = Weather(List())
     val emptyMain = Main(emptyNumber, emptyNumber, emptyNumber, emptyNumber, emptyNumber)
     val emptyWind = Wind(emptyNumber, emptyNumber)
     val emptyRain = Rain(emptyNumber)
     val emptyClouds = Clouds(emptyNumber)
 
-
-    /*
-
-"
-
-{
-    \"coord\":
-    {
-        \"lon\":-0.13,
-        \"lat\":51.51
-    },
-    \"weather\":
-    [
-        {
-            \"id\":803,
-            \"main\":\"Clouds\",
-            \"description\":\"broken clouds\",
-            \"icon\":\"04d\"
-        }
-    ],
-    \"base\":\"stations\",
-    \"main\":
-    {
-        \"temp\":8.09,
-        \"pressure\":1028,
-        \"humidity\":57,
-        \"temp_min\":7,
-        \"temp_max\":9
-    },
-    \"visibility\":10000,
-    \"wind\":
-    {
-        \"speed\":3.1,
-        \"deg\":300
-    },
-    \"clouds\":
-    {
-        \"all\":75
-    },
-    \"dt\":1549896600,
-    \"sys\":
-    {
-        \"type\":1,
-        \"id\":1414,
-        \"message\":0.0032,
-        \"country\":\"GB\",
-        \"sunrise\":1549869682,
-        \"sunset\":1549904933
-    },
-    \"id\":2643743,
-    \"name\":\"London\",
-    \"cod\":200
-}
-
-"
-
-
-     */
-
-
-    // todo: rain, snow, etc...
 
     case class WeatherSchema(
                                 coord: Coord,
@@ -221,16 +153,6 @@ object WeatherSchemaParser extends KafkaSchemaParser[String, Struct] {
                 name <- h.get[String]("name")
                 cod <- h.get[Double]("cod")
 
-
-                /*
-                uuidType <- h.get[String]("uuidType")
-                title <- h.get[String]("title")
-                segments <- h.get[List[String]]("segments")
-                ids <- {
-                    h.getOrElse[List[String]]("seriesIds")(h.get[List[String]]("programmeIds").getOrElse(Nil))
-                }
-                */
-
             } yield WeatherSchema(
                 coord,
                 weather,
@@ -253,7 +175,6 @@ object WeatherSchemaParser extends KafkaSchemaParser[String, Struct] {
     val emptyWeatherSchema: WeatherSchema = WeatherSchema(
         emptyCoord,
         List(),
-        //emptyWeather,
         emptyString,
         emptyMain,
         emptyNumber,
@@ -272,7 +193,7 @@ object WeatherSchemaParser extends KafkaSchemaParser[String, Struct] {
 
         logger.info(s"Weather Schema parser: JSON text to be parsed: ${structInput}")
 
-        val weatherParsed = decode[WeatherSchema](structInput) match {
+        val weatherParsed: WeatherSchema = decode[WeatherSchema](structInput) match {
             case Left(error) => {
                 logger.error(s"JSON parser error: ${error}")
                 emptyWeatherSchema
